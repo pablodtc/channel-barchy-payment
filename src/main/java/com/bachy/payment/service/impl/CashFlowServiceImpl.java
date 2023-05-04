@@ -42,7 +42,7 @@ public class CashFlowServiceImpl implements CashFlowService {
           return Mono.empty();
         }).defaultIfEmpty(ApiResponse.<CashFlowRequest>builder()
             .code("E0001")
-            .message("Codigo no encontrado")
+            .message("Código no encontrado")
             .payload(request)
             .build());
 
