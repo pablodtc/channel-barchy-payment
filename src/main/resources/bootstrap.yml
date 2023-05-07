@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: com-barchy-payment
+  cloud:
+    config:
+      uri: https://config-server:8888
