@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: com-barchy-payment
+  cloud:
+    config:
+      uri: http://localhost:8888
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/payment
+logging:
+  level:
+    root: info
+server:
+  port: 8001

@@ -5,9 +5,6 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 @Repository
 public interface CashFlowRepo extends ReactiveCrudRepository<CashFlowModel, String> {
 

@@ -2,6 +2,7 @@ package com.bachy.payment.mapper;
 
 import com.bachy.payment.model.CashFlowModel;
 import com.bachy.payment.model.CashFlowRequest;
+import com.bachy.payment.model.CashFlowResponse;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -23,5 +24,13 @@ public class CashFlowMapper {
     model.setDatePayment(formatDateTime);
 
     return model;
+  }
+
+  public CashFlowResponse toCashFlowResponse (CashFlowModel request) {
+    CashFlowResponse response = new CashFlowResponse();
+    response.setCodePayment(request.getCodePayment());
+    response.setTotalAmount(request.getAmount());
+
+    return response;
   }
 }

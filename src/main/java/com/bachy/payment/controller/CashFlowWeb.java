@@ -1,17 +1,12 @@
 package com.bachy.payment.controller;
 
-import com.bachy.payment.model.ApiResponse;
-import com.bachy.payment.model.CashFlowModel;
-import com.bachy.payment.model.CashFlowRequest;
-import com.bachy.payment.model.DateRequest;
-import com.bachy.payment.service.impl.CashFlowServiceImpl;
+import com.bachy.payment.model.*;
 import com.bachy.payment.service.spi.CashFlowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -34,5 +29,10 @@ public class CashFlowWeb {
   @GetMapping("/get-date")
   public Flux<CashFlowModel> getByDate (@RequestBody DateRequest dateRequest) {
     return serviceImpl.findByDate(dateRequest.getStartDate(), dateRequest.getEndDate());
+  }
+
+  @GetMapping("/get-total-amount")
+  public Mono<List<CashFlowResponse>> getTotalAmountByDate (@RequestBody DateRequest dateRequest) {
+    return serviceImpl.getTotalAmountByDate(dateRequest);
   }
 }

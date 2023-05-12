@@ -1,10 +1,7 @@
 package com.bachy.payment.service.impl;
 
 import com.bachy.payment.mapper.CashFlowMapper;
-import com.bachy.payment.model.ApiResponse;
-import com.bachy.payment.model.CashFlowModel;
-import com.bachy.payment.model.CashFlowRequest;
-import com.bachy.payment.model.PaymentModel;
+import com.bachy.payment.model.*;
 import com.bachy.payment.repository.CashFlowRepo;
 import com.bachy.payment.repository.PaymentRepo;
 import com.bachy.payment.service.spi.CashFlowService;
@@ -16,9 +13,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,13 +60,40 @@ public class CashFlowServiceImpl implements CashFlowService {
 
   @Override
   public Mono<List<CashFlowModel>> getAllCashFlowMovement() {
-    Mono<List<CashFlowModel>> listMono = repo.findAll().collectList();
-    return listMono;
+    return repo.findAll().collectList();
+
   }
 
   @Override
   public Flux<CashFlowModel> findByDate(String startDate, String endDate) {
     return repo.findByDatePaymentIsBetween(startDate, endDate);
+  }
+
+  @Override
+  public Mono<List<CashFlowResponse>> getTotalAmountByDate(DateRequest dateRequest) {
+    return this.findByDate(dateRequest.getStartDate(), dateRequest.getEndDate())
+            .collect(Collectors.groupingBy(CashFlowModel::getCodePayment))
+            .map(x -> x.values()
+                    .stream()
+                    .map(cashFlowModels -> cashFlowModels
+                            .stream()
+                            .reduce((a, b) -> new CashFlowModel(null, null, a.getCodePayment(), null, a.getAmount().add(b.getAmount()), null)))
+                    .map(Optional::get)
+                    .map(mapper::toCashFlowResponse)
+                    .collect(Collectors.toList()));
+
+    /*return this.findByDate(dateRequest.getStartDate(), dateRequest.getEndDate())
+            .collect(Collectors.groupingBy(CashFlowModel::getCodePayment))
+            .map(x -> x.entrySet()
+                    .stream()
+                    .map(xx -> xx.getValue()
+                            .stream()
+                            .reduce((a, b) -> new CashFlowModel(null, null, a.getCodePayment(), null, a.getAmount().add(b.getAmount()), null)))
+                    .map(y -> y.get())
+                    .map(z -> mapper.toCashFlowResponse(z))
+                    .collect(Collectors.toList()));*/
+            //        collectingAndThen(reducing(BigDecimal.ZERO, BigDecimal::add))))
+
   }
 
 }
