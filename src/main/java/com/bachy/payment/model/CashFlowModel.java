@@ -21,4 +21,9 @@ public class CashFlowModel {
   private String description;
   private BigDecimal amount;
   private String datePayment;
+
+  /*
+  Service
+  food, public_services, baby_health, financial_payments, shopping, public_transportation, others
+   */
 }

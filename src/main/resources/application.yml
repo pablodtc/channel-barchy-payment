@@ -6,9 +6,6 @@ spring:
       uri: http://localhost:8888
   data:
     mongodb:
-      uri: mongodb://localhost:27017/payment
-logging:
-  level:
-    root: info
+      uri: mongodb://localhost:27017/purchase_income
 server:
   port: 8001

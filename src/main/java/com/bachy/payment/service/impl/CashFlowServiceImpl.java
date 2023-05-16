@@ -32,9 +32,9 @@ public class CashFlowServiceImpl implements CashFlowService {
     return paymentService.findByCodePayment(request.getCodePayment())
         .flatMap(paymentModel -> {
           if (paymentModel.getCodePayment().equals("withdraw")) {
-            return addAmountToTotalpayment(request, paymentModel);
+            return addAmountToTotalPayment(request, paymentModel);
           } else if (paymentModel.getCodePayment().equals("deposit")){
-            return addAmountToTotalpayment(request, paymentModel);
+            return addAmountToTotalPayment(request, paymentModel);
           }
           return Mono.empty();
         }).defaultIfEmpty(ApiResponse.<CashFlowRequest>builder()
@@ -45,7 +45,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 
   }
 
-  private Mono<ApiResponse<CashFlowRequest>> addAmountToTotalpayment(CashFlowRequest request, PaymentModel paymentModel) {
+  private Mono<ApiResponse<CashFlowRequest>> addAmountToTotalPayment(CashFlowRequest request, PaymentModel paymentModel) {
     BigDecimal add = paymentModel.getAmount().add(request.getAmount());
     paymentModel.setCodePayment(request.getCodePayment());
     paymentModel.setAmount(add);
